@@ -19,15 +19,7 @@ class OutgoingFaxEvent implements HistoryEventInterface
 
         return [
             'user' => $model->user,
-            'body' => 'Outgoing fax - ' .
-                (isset($fax->document) ? Html::a(
-                    Yii::t('app', 'view document'),
-                    $fax->document->getViewUrl(),
-                    [
-                        'target' => '_blank',
-                        'data-pjax' => 0
-                    ]
-                ) : ''),
+            'body' => $this->getBodyText($model),
             'footer' => Yii::t('app', '{type} was sent to {group}', [
                 'type' => $fax ? $fax->getTypeText() : 'Fax',
                 'group' => isset($fax->creditorGroup) ? Html::a($fax->creditorGroup->name, ['creditors/groups'], ['data-pjax' => 0]) : ''
@@ -40,5 +32,20 @@ class OutgoingFaxEvent implements HistoryEventInterface
     public function getEventText(): string
     {
        return Yii::t('app', 'Outgoing fax');
+    }
+
+    public function getBodyText(ActiveRecord $model): string
+    {
+        $fax = $model->fax;
+
+        return 'Outgoing fax - ' .
+            (isset($fax->document) ? Html::a(
+                Yii::t('app', 'view document'),
+                $fax->document->getViewUrl(),
+                [
+                    'target' => '_blank',
+                    'data-pjax' => 0
+                ]
+            ) : '');
     }
 }

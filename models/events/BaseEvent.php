@@ -57,5 +57,10 @@ abstract class BaseEvent
         return $this->event->getEventText();
     }
 
+    public function getBodyText()
+    {
+        return $this->event->getBodyText($this->model);
+    }
+
     abstract public function getTemplateData(): array;
 }

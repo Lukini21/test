@@ -24,6 +24,13 @@ class CustomerChangeQualityEvent implements HistoryEventInterface
 
     public function getEventText(): string
     {
-       return Yii::t('app', 'Property changed');
+        return Yii::t('app', 'Property changed');
+    }
+
+    public function getBodyText(ActiveRecord $model): string
+    {
+        return $this->getEventText() .
+            (Customer::getQualityTextByQuality($model->getDetailOldValue('quality')) ?? "not set") . ' to ' .
+            (Customer::getQualityTextByQuality($model->getDetailNewValue('quality')) ?? "not set");
     }
 }

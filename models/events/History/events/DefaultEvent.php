@@ -25,4 +25,9 @@ class DefaultEvent implements HistoryEventInterface
     {
         return '';
     }
+
+    public function getBodyText(ActiveRecord $model): string
+    {
+       return $this->getEventText();
+    }
 }

@@ -18,7 +18,7 @@ class CreatedTaskEvent implements HistoryEventInterface
 
         return [
             'user' => $model->user,
-            'body' => $this->getEventText() . ": " . ($task->title ?? ''),
+            'body' => $this->getBodyText($model),
             'iconClass' => 'fa-check-square bg-yellow',
             'footerDatetime' => $model->ins_ts,
             'footer' => isset($task->customerCreditor->name) ? "Creditor: " . $task->customerCreditor->name : ''
@@ -28,5 +28,12 @@ class CreatedTaskEvent implements HistoryEventInterface
     public function getEventText(): string
     {
         return Yii::t('app', 'Task created');
+    }
+
+    public function getBodyText(ActiveRecord $model): string
+    {
+        $task = $model->task;
+
+        return $this->getEventText() . ": " . ($task->title ?? '');
     }
 }

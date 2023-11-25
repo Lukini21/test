@@ -27,4 +27,11 @@ class CustomerChangeTypeEvent implements HistoryEventInterface
     {
         return Yii::t('app', 'Type changed');
     }
+
+    public function getBodyText(ActiveRecord $model): string
+    {
+        return $this->getEventText() .
+            (Customer::getTypeTextByType($model->getDetailOldValue('type')) ?? "not set") . ' to ' .
+            (Customer::getTypeTextByType($model->getDetailNewValue('type')) ?? "not set");
+    }
 }

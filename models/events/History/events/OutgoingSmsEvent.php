@@ -17,7 +17,7 @@ class OutgoingSmsEvent implements HistoryEventInterface
     {
         return [
             'user' => $model->user,
-            'body' => $model->sms->message ? $model->sms->message : '',
+            'body' => $this->getBodyText($model),
             'footer' => $model->sms->direction == Sms::DIRECTION_INCOMING ?
                 Yii::t('app', 'Outgoing message from {number}', [
                     'number' => $model->sms->phone_from ?? ''
@@ -33,5 +33,10 @@ class OutgoingSmsEvent implements HistoryEventInterface
     public function getEventText(): string
     {
         return Yii::t('app', 'Outgoing message');
+    }
+
+    public function getBodyText(ActiveRecord $model): string
+    {
+        return $model->sms->message ? $model->sms->message : '';
     }
 }
